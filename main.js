@@ -12,15 +12,43 @@
 
 
 
-// Genera un numero definito di figli all'interno di un'elemento
+/**
+ * CHILD GENERATOR
+ * Genera un numero definito di figli all'interno di un'elemento
+ */
 function childGenerator(nameContainElement, typeOfChild, nameChildClass, numberOfChild){
     for (i = 0; i < numberOfChild; i++) {
         document.getElementById(nameContainElement).innerHTML += `<${typeOfChild} id="${i + 1}" class="${nameChildClass}">${i + 1}</${typeOfChild}>`
     }
 }
 
-// richiamo la funzione childGenerator inserendo i dati e richiedendo all'utente il numero di quadrati da generare
-childGenerator("field", "div", "square", prompt('Inserisci un numero di quadrati'));
+
+/**
+ * BTN RESTART
+ * Pulisce il campo
+ * legge difficoltà e richiama childGenerator() inserendo i dati in base alla difficoltà
+ */
+// leggo difficoltà e richiamo la funzione childGenerator inserendo i dati in base alla difficoltà
+document.getElementById('btn-restart').addEventListener('click',
+    function(){
+        // libera il campo
+        document.getElementById('field').innerHTML = ""
+
+        // legge la difficoltà e genera il campo
+        let difficulty = document.getElementById('diff').value;
+        if (difficulty == 0){
+            childGenerator("field", "div", "square", 100);
+        } else if (difficulty == 1){
+            childGenerator("field", "div", "square", 80);
+        } else if (difficulty == 2){
+            childGenerator("field", "div", "square", 50);
+        } else {
+            alert('ERRORE!! Ricarica la pagina');
+        }
+    }
+    );
+// richiama childGenerator() al load della pagina
+childGenerator("field", "div", "square", 100);
 
 // al click di un quadrato questo si colora di rosso e crea un alert che ti informa del suo numero
 document.getElementById('field').addEventListener('click',
