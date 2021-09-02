@@ -70,6 +70,8 @@ function startGame(){
 var squareList = [];
 var bombList = [];
 
+var pointCounter = 0;
+
 // Al click di btn-restart richiama startGame()
 document.getElementById('btn-restart').addEventListener('click',
 function(){
@@ -86,9 +88,17 @@ function clickEvent(event){
 
     event.target.classList.add('selected');
 
+    console.log(parseInt(event.target.id));
+    if(!isNaN(parseInt(event.target.id))){
+        pointCounter++;
+    }
+
     if (bombList.includes(nCella)){
         alert('hai perso')
         document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`
+        pointCounter--;
     }
+
+    document.getElementById('points').innerHTML = "Punteggio: " + pointCounter;
 }
 );
