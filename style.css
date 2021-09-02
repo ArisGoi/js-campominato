@@ -17,6 +17,15 @@ body{
     flex-wrap: wrap;
     margin: 50px 10px;
     width: 600px;
+    position: relative;
+}
+#field .bloccoClick{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
 }
 
 #scoreboard{
@@ -43,10 +52,13 @@ body{
 }
 
 .square.selected{
-    background-color: red;
+    background-color: green;
 }
 
-.bombInside::after{
+.square.selected.bombInside{
+    background-color: red;
+}
+.square.selected.bombInside::after{
     content: '💣';
     line-height: 57px;
 }

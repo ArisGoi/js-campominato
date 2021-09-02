@@ -72,37 +72,23 @@ var bombList = [];
 
 // Al click di btn-restart richiama startGame()
 document.getElementById('btn-restart').addEventListener('click',
-    function(){
-        startGame();
-    }
-    );
-
-
-
-
-
-
-
-
-
-
-
-
-
-document.getElementById('field').addEventListener('click', 
 function(){
-    // al click di un quadrato questo si colora di rosso e crea un alert che ti informa del suo numero
-    document.getElementById('field').addEventListener('click',
-    function clickEvent(event){
+    startGame();
+}
+);
 
-        let nCella = event.target.id;
 
-        if (nCella == 5){
-            event.target.classList.add('bombInside');
-        } else {
-            event.target.classList.add('selected');
-        }
+
+document.getElementById('field').addEventListener('click',
+function clickEvent(event){
+
+    let nCella = parseInt(event.target.id);
+
+    event.target.classList.add('selected');
+
+    if (bombList.includes(nCella)){
+        alert('hai perso')
+        document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`
     }
-    );
 }
 );
