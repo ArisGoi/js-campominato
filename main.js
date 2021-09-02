@@ -18,46 +18,91 @@
  */
 function childGenerator(nameContainElement, typeOfChild, nameChildClass, numberOfChild){
     for (i = 0; i < numberOfChild; i++) {
-        document.getElementById(nameContainElement).innerHTML += `<${typeOfChild} id="${i + 1}" class="${nameChildClass}">${i + 1}</${typeOfChild}>`
+        document.getElementById(nameContainElement).innerHTML += 
+        `<${typeOfChild} id="${i}" class="${nameChildClass}"></${typeOfChild}>`
     }
 }
 
-
 /**
- * BTN RESTART
+ * RESTART
  * Pulisce il campo
  * legge difficoltà e richiama childGenerator() inserendo i dati in base alla difficoltà
  */
 // leggo difficoltà e richiamo la funzione childGenerator inserendo i dati in base alla difficoltà
+function startGame(){
+    // libera il campo
+    document.getElementById('field').innerHTML = "";
+
+    // legge la difficoltà e definisce il numero di quadrati
+    let difficulty = document.getElementById('diff').value;
+    if (difficulty == 0){ //facile
+        var nOfSquare = 100;
+    } else if (difficulty == 1){ //medio
+        var nOfSquare = 80;
+    } else if (difficulty == 2){ //difficile
+        var nOfSquare = 50;
+    };
+    // genera il campo
+    childGenerator("field", "div", "square", nOfSquare);
+
+    // scrive l'elenco dei quadrati nella squareList
+    squareList = [];
+    for (i=0; i<nOfSquare; i++){
+        squareList.push(i);
+    }
+    // genera 16 numeri diversi (bombe)
+    bombList = [];
+    while (16>bombList.length){
+        let bombPosNumber = parseInt(Math.random() * nOfSquare);
+
+        while (bombList.includes(bombPosNumber)){
+            bombPosNumber = parseInt(Math.random() * nOfSquare);
+        };
+        // in bombList inserisce il numero della posizione della bomba
+        bombList.push(bombPosNumber);
+        // sostituisce nella squareList l'id della casella bomba con "bomb"
+        squareList.splice(bombPosNumber, 1, "bomb");
+        // posiziona la grafica della bomba nel campo
+        document.getElementById(bombPosNumber).classList.add('bombInside');
+    };
+}
+
+var squareList = [];
+var bombList = [];
+
+// Al click di btn-restart richiama startGame()
 document.getElementById('btn-restart').addEventListener('click',
     function(){
-        // libera il campo
-        document.getElementById('field').innerHTML = ""
+        startGame();
+    }
+    );
 
-        // legge la difficoltà e genera il campo
-        let difficulty = document.getElementById('diff').value;
-        if (difficulty == 0){
-            childGenerator("field", "div", "square", 100);
-        } else if (difficulty == 1){
-            childGenerator("field", "div", "square", 80);
-        } else if (difficulty == 2){
-            childGenerator("field", "div", "square", 50);
+
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById('field').addEventListener('click', 
+function(){
+    // al click di un quadrato questo si colora di rosso e crea un alert che ti informa del suo numero
+    document.getElementById('field').addEventListener('click',
+    function clickEvent(event){
+
+        let nCella = event.target.id;
+
+        if (nCella == 5){
+            event.target.classList.add('bombInside');
         } else {
-            alert('ERRORE!! Ricarica la pagina');
+            event.target.classList.add('selected');
         }
     }
     );
-// richiama childGenerator() al load della pagina
-childGenerator("field", "div", "square", 100);
-
-// al click di un quadrato questo si colora di rosso e crea un alert che ti informa del suo numero
-document.getElementById('field').addEventListener('click',
-    function(event){
-
-        let nCella = event.target.innerHTML;
-
-        alert('hai fatto click sulla cella numero: ' + nCella);
-
-        event.target.classList.add('selected');
-    }
+}
 );
