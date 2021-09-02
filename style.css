@@ -7,20 +7,34 @@
 
 body{
     background-color: darkslategray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#container{
+#field{
     display: flex;
     flex-wrap: wrap;
-    margin: auto;
-    width: 1000px;
+    margin: 50px 10px;
+    width: 600px;
+}
+
+#scoreboard{
+    width: 300px;
+    padding: 20px 10px;
+    background-color: pink;
+}
+
+#scoreboard select{
+    display: block;
+    margin: 30px 0;
 }
 
 .square{
     background-color: rgb(253, 220, 226);
     border: 2px solid darkslategray;
-    height: 100px;
-    width: 100px;
+    height: 60px;
+    width: 60px;
     font-size: 25px;
     color: darkslategray;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -29,4 +43,8 @@ body{
 
 .square.selected{
     background-color: red;
+}
+
+.bombInside::after{
+    content: '💣';
 }
