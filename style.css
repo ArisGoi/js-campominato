@@ -41,7 +41,8 @@ body{
 
 .square{
     background-color: rgb(253, 220, 226);
-    border: 2px solid darkslategray;
+    /* border: 2px solid darkslategray; */
+    box-shadow: inset 0px 0px 0px 2px rgba(112,112,112,1);
     height: 60px;
     width: 60px;
     font-size: 25px;
@@ -49,6 +50,7 @@ body{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     cursor: pointer;
     text-align: center;
+    position: relative;
 }
 
 .square.selected{
@@ -59,6 +61,11 @@ body{
     background-color: red;
 }
 .square.selected.bombInside::after{
+    content: '💣';
+    line-height: 57px;
+}
+/* DEBUG */
+.bombInside::after{
     content: '💣';
     line-height: 57px;
 }

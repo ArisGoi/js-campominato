@@ -36,11 +36,11 @@ function startGame(){
     // legge la difficoltà e definisce il numero di quadrati
     let difficulty = document.getElementById('diff').value;
     if (difficulty == 0){ //facile
-        var nOfSquare = 100;
+        nOfSquare = 100;
     } else if (difficulty == 1){ //medio
-        var nOfSquare = 80;
+        nOfSquare = 80;
     } else if (difficulty == 2){ //difficile
-        var nOfSquare = 50;
+        nOfSquare = 50;
     };
     // genera il campo
     childGenerator("field", "div", "square", nOfSquare);
@@ -67,6 +67,8 @@ function startGame(){
     };
 }
 
+var nOfSquare;
+
 var squareList = [];
 var bombList = [];
 
@@ -76,6 +78,8 @@ var pointCounter = 0;
 document.getElementById('btn-restart').addEventListener('click',
 function(){
     startGame();
+    pointCounter = 0;
+    document.getElementById('points').innerHTML = "Punteggio: " + pointCounter;
 }
 );
 
@@ -83,22 +87,31 @@ function(){
 
 document.getElementById('field').addEventListener('click',
 function clickEvent(event){
-
+    // identifica la cella clickata
     let nCella = parseInt(event.target.id);
 
+    // aggiunge la classe selcted alla cella e gli aggiunge un "BloccoClick" che gli impedisce di essere clickata
     event.target.classList.add('selected');
+    event.target.innerHTML += `<div class="bloccoClick"></div>`;
 
-    console.log(parseInt(event.target.id));
+    // se la cella è valida aumenta il punteggio
+    console.log("click: " + parseInt(event.target.id));
     if(!isNaN(parseInt(event.target.id))){
         pointCounter++;
     }
 
+    // se la cella è una bomba "hai perso" e blocca il click su tutto il campo
     if (bombList.includes(nCella)){
         alert('hai perso')
-        document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`
+        document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`;
         pointCounter--;
     }
 
     document.getElementById('points').innerHTML = "Punteggio: " + pointCounter;
+
+    if(pointCounter == (nOfSquare - 16)){
+        alert('hai vinto');
+        document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`;
+    }
 }
 );
