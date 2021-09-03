@@ -39,7 +39,7 @@ function childGenerator(nameContainElement, typeOfChild, nameChildClass, numberO
 function startGame(){
     // libera il campo
     document.getElementById('field').innerHTML = "";
-    clickList = [];
+    clickList = [NaN];
 
     // legge la difficoltà e definisce il numero di quadrati
     let difficulty = document.getElementById('diff').value;
@@ -91,9 +91,8 @@ function clickEvent(event){
     // se la cella è valida aumenta il punteggio
     console.log("click: " + parseInt(event.target.id));
     if(clickList.includes(nCella) == false){
-        // !isNaN(parseInt(event.target.id))
-        pointCounter++;
 
+        pointCounter++;
         clickList.push(nCella);
     };
 
