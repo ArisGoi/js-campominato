@@ -62,7 +62,7 @@ body{
 }
 
 .square.selected.bombInside{
-    background-color: rgba(255, 0, 0, 0.295);
+    background-color: rgb(255, 0, 0);
 }
 
 /* .square.selected.bombInside::after{
