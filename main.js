@@ -73,7 +73,7 @@ document.getElementById('btn-restart').addEventListener('click',
 function(){
     startGame();
     pointCounter = 0;
-    document.getElementById('points').innerHTML = "Punteggio: " + pointCounter;
+    document.getElementById('points').innerHTML = "Your Score: " + pointCounter;
 }
 );
 
@@ -104,24 +104,12 @@ function clickEvent(event){
         pointCounter--;
     };
 
-    document.getElementById('points').innerHTML = "Punteggio: " + pointCounter;
+    document.getElementById('points').innerHTML = "Your Score: " + pointCounter;
 
     if(pointCounter == (nOfSquare - 16)){
         alert('hai vinto');
         document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`;
     };
-
-    /**
-     * CONTROLLO NUMERI BOMBE VICINO
-     */
-    // var innerCellNum = parseInt(document.getElementById(nCella).innerHTML);
-    // if(isNaN(innerCellNum)){
-    //     innerCellNum = parseInt(document.getElementById(nCella).innerHTML = 0);
-    // }
-    // if (bombList.includes(nCella + 1)){
-    //     document.getElementById(nCella).innerHTML = parseInt(innerCellNum) + 1;
-    //     document.getElementById(nCella).innerHTML = parseInt(innerCellNum) + 1;
-    // };
     
 }
 );
