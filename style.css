@@ -65,7 +65,7 @@ body{
     line-height: 57px;
 }
 /* DEBUG */
-.bombInside::after{
+/* .bombInside::after{
     content: '💣';
     line-height: 57px;
-}
+} */

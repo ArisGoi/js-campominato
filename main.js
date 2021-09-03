@@ -11,6 +11,13 @@
 */
 
 
+var nOfSquare;
+
+var clickList = [];
+var bombList = [];
+
+var pointCounter = 0;
+
 
 /**
  * CHILD GENERATOR
@@ -32,6 +39,7 @@ function childGenerator(nameContainElement, typeOfChild, nameChildClass, numberO
 function startGame(){
     // libera il campo
     document.getElementById('field').innerHTML = "";
+    clickList = [];
 
     // legge la difficoltà e definisce il numero di quadrati
     let difficulty = document.getElementById('diff').value;
@@ -45,11 +53,6 @@ function startGame(){
     // genera il campo
     childGenerator("field", "div", "square", nOfSquare);
 
-    // scrive l'elenco dei quadrati nella squareList
-    squareList = [];
-    for (i=0; i<nOfSquare; i++){
-        squareList.push(i);
-    }
     // genera 16 numeri diversi (bombe)
     bombList = [];
     while (16>bombList.length){
@@ -60,19 +63,10 @@ function startGame(){
         };
         // in bombList inserisce il numero della posizione della bomba
         bombList.push(bombPosNumber);
-        // sostituisce nella squareList l'id della casella bomba con "bomb"
-        squareList.splice(bombPosNumber, 1, "bomb");
         // posiziona la grafica della bomba nel campo
         document.getElementById(bombPosNumber).classList.add('bombInside');
     };
 }
-
-var nOfSquare;
-
-var squareList = [];
-var bombList = [];
-
-var pointCounter = 0;
 
 // Al click di btn-restart richiama startGame()
 document.getElementById('btn-restart').addEventListener('click',
@@ -90,28 +84,44 @@ function clickEvent(event){
     // identifica la cella clickata
     let nCella = parseInt(event.target.id);
 
-    // aggiunge la classe selcted alla cella e gli aggiunge un "BloccoClick" che gli impedisce di essere clickata
+    // aggiunge la classe selcted alla cella
     event.target.classList.add('selected');
-    event.target.innerHTML += `<div class="bloccoClick"></div>`;
+    
 
     // se la cella è valida aumenta il punteggio
     console.log("click: " + parseInt(event.target.id));
-    if(!isNaN(parseInt(event.target.id))){
+    if(clickList.includes(nCella) == false){
+        // !isNaN(parseInt(event.target.id))
         pointCounter++;
-    }
+
+        clickList.push(nCella);
+    };
 
     // se la cella è una bomba "hai perso" e blocca il click su tutto il campo
     if (bombList.includes(nCella)){
         alert('hai perso')
         document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`;
         pointCounter--;
-    }
+    };
 
     document.getElementById('points').innerHTML = "Punteggio: " + pointCounter;
 
     if(pointCounter == (nOfSquare - 16)){
         alert('hai vinto');
         document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`;
-    }
+    };
+
+    /**
+     * CONTROLLO NUMERI BOMBE VICINO
+     */
+    // var innerCellNum = parseInt(document.getElementById(nCella).innerHTML);
+    // if(isNaN(innerCellNum)){
+    //     innerCellNum = parseInt(document.getElementById(nCella).innerHTML = 0);
+    // }
+    // if (bombList.includes(nCella + 1)){
+    //     document.getElementById(nCella).innerHTML = parseInt(innerCellNum) + 1;
+    //     document.getElementById(nCella).innerHTML = parseInt(innerCellNum) + 1;
+    // };
+    
 }
 );
