@@ -65,11 +65,6 @@ body{
     background-color: rgb(255, 0, 0);
 }
 
-/* .square.selected.bombInside::after{
-    content: '💣';
-    line-height: 57px;
-} */
-
 .square.selected.bombInside::after{
     content: '';
     height: 50px;
@@ -81,22 +76,3 @@ body{
     background-image: url(piranha.png);
     background-size: cover;
 }
-
-
-/* DEBUG */
-/* .bombInside::after{
-    content: '💣';
-    line-height: 57px;
-} */
-
-/* .bombInside::after{
-    content: '';
-    height: 50px;
-    width: 50px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-image: url(piranha.png);
-    background-size: cover;
-} */
