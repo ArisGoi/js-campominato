@@ -1,0 +1,39 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#scoreboard {
+  padding: 15px 30%;
+  background-color: lightblue;
+}
+
+#field ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+#field li {
+  display: flex;
+  background-color: #f08080;
+}
+#field li div {
+  border: 1px solid black;
+  height: 50px;
+  width: 50px;
+}
+#field li div.clicked {
+  background-color: #fff;
+}
+#field li div.bombInside {
+  background-color: pink;
+  background-image: url(../piranha.png);
+  background-size: contain;
+}
+#field li div.bombInside.this-bomb {
+  background-color: red;
+}
+
+/*# sourceMappingURL=style.css.map */
