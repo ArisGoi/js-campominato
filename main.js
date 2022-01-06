@@ -298,13 +298,4 @@ function checkBombsAround(event){
                 this_square.style.backgroundColor = "var(--most-danger)"
         }
     }
-
-    // se (counter = 0) lancio sblocco caselle
-    if (counter = 0){
-        unlockSafeSquare(event);
-    }
-}
-
-function unlockSafeSquare(event){
-    
 }
