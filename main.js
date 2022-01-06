@@ -1,4 +1,9 @@
-
+/** --------------------------------------------
+## TODO: ##
+-- Rifare lo style
+-- Fare Responsive
+--(al click di button-restart non viene resettato l'event-listener)
+------------------------------------------------ */
 
 // DOM
 const dom_field = document.getElementById("field");
@@ -159,6 +164,8 @@ function checkSquare(event, eventY, eventX){
             score++;
             points.innerHTML = score;
         }
+
+        checkBombsAround(event);
     }
 }
 
@@ -178,4 +185,97 @@ function showAllBombs(){
             elm.classList.add('bombInside');
         }
     });
+}
+
+/**
+ * checksBombsAround
+ * controlla quante bombe toccano il quadrato selezionato
+ * @param {*} event 
+ */
+function checkBombsAround(event){
+    //starting square coordinates
+    const startY = event.target.dataset.y;
+    const startX = event.target.dataset.x;
+    //min & max of x & y
+    const min = 0;
+    const max = colSize - 1;
+    //counter of around bombs
+    let counter = 0;
+
+    // check[UP]
+    if(startY != min){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) - 1}-${parseInt(startX)}`){
+                counter++;
+            }
+        })
+    }
+
+    // check[UP-RIGHT]
+    if(startY != min && startX != max){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) - 1}-${parseInt(startX) + 1}`){
+                counter++;
+            }
+        })
+    }
+
+    // check[RIGHT]
+    if(startX != max){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY)}-${parseInt(startX) + 1}`){
+                counter++;
+            }
+        })
+    }
+    
+    // check[DOWN-RIGHT]
+    if(startY != max && startX != max){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) + 1}-${parseInt(startX) + 1}`){
+                counter++;
+            }
+        })
+    }
+    
+    // check[DOWN]
+    if(startY != max){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) + 1}-${parseInt(startX)}`){
+                counter++;
+            }
+        })
+    }
+    
+    // check[DOWN-LEFT]
+    if(startY != max && startX != min){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) + 1}-${parseInt(startX) - 1}`){
+                counter++;
+            }
+        })
+    }
+    
+    // check[LEFT]
+    if(startX != min){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY)}-${parseInt(startX) - 1}`){
+                counter++;
+            }
+        })
+    }
+    
+    // check[UP-LEFT]
+    if(startY != min && startX != min){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) - 1}-${parseInt(startX) - 1}`){
+                counter++;
+            }
+        })
+    }
+
+    // scrive il numero di bombe trovate
+    if(counter > 0){
+        event.target.innerHTML = counter;
+    }
 }
