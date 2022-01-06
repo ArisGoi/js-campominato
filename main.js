@@ -79,3 +79,103 @@ function gameOver(event){
 }
 
 // -_-_--_-_-_-_--_-_-___-__-_-_--_--_-_-_----_-_--_----_-_--_-_-_-__-_-_-_-__--_-_-_--_-_--_-__-_-__-_-__-_
+
+/**
+ * makeField
+ * Genera il campo da gioco:
+ * la tabella con coordinare x e y per ogni quadrato
+ */
+function makeField() {
+    let addTable = document.createElement("ul");
+    let addRow;
+    let addCell;
+
+    dom_field.appendChild(addTable);
+
+    for (let y = 0; y < colSize; y++) {
+        addRow = document.createElement("li");
+        addRow.dataset.row = y;
+
+        for (let x = 0; x < colSize; x++) {
+            addCell = document.createElement("div");
+            addCell.dataset.y = y;
+            addCell.dataset.x = x;
+
+            addRow.appendChild(addCell);
+        }
+
+        addTable.appendChild(addRow);
+    }
+}
+
+/**
+ * makeBombs
+ * genera le bombe sul terreno e le inserisce nella bombList
+ */
+function makeBombs(){
+    let bomb;
+
+    while (bombs>bombList.length){
+        let bomb;
+
+        do{
+            getY = parseInt(Math.random() * colSize);
+            getX = parseInt(Math.random() * colSize);
+
+            bomb = {
+                posY: getY,
+                posX: getX,
+                code: `${getY}-${getX}`
+            }
+        } while(bombList.find(obj => { //check se è già contenuto
+            if(obj.code == bomb.code){return true} else{return false}
+        }));
+
+        // in bombList inserisce la bomba
+        bombList.push(bomb);
+    };
+}
+
+/**
+ * checkSquare
+ * Controlla l'identità del quadrato premuto e lancia le azioni correlate
+ * @param {*} event - event da eventListener
+ * @param {number} eventY - Coordinata_Y
+ * @param {number} eventX - Coordinata_X
+ */
+function checkSquare(event, eventY, eventX){
+    // Controllo click su Bomba
+    if(bombList.find(obj => {
+        if(obj.code == `${eventY}-${eventX}`){return true} else{return false}
+    })){//Azione Boom!
+        gameOver(event);
+        
+    } else{//Azione Save!
+        event.target.classList.add('clicked');
+
+        //Validazione doppio-click
+        if(!clickList.includes(`${eventY}-${eventX}`)){
+            clickList.push(`${eventY}-${eventX}`);
+            score++;
+            points.innerHTML = score;
+        }
+    }
+}
+
+/**
+ * showAllBombs
+ * mostra tutte le bombe presenti nel campo
+ */
+function showAllBombs(){
+
+    let selAll = document.getElementById('field').querySelectorAll('div');
+
+    selAll.forEach(elm => {
+        let elmY = elm.dataset.y;
+        let elmX = elm.dataset.x;
+
+        if(bombList.find(obj => {if(obj.code == `${elmY}-${elmX}`){return true} else{return false}})){
+            elm.classList.add('bombInside');
+        }
+    });
+}
