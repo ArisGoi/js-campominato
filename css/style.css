@@ -1,13 +1,29 @@
 /* Reset */
+@import url("https://fonts.googleapis.com/css2?family=Raleway&family=Secular+One&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  font-family: "Secular One", sans-serif;
+}
+
+:root {
+  --default: #fff;
+  --soft-alert: #ffdd93;
+  --alert: #ebc109;
+  --danger: #ff8331;
+  --most-danger: #be3636;
+}
+
 #scoreboard {
   padding: 15px 30%;
   background-color: lightblue;
+}
+#scoreboard p {
+  font-family: "Raleway", sans-serif;
 }
 
 #field ul {
@@ -18,11 +34,17 @@
 #field li {
   display: flex;
   background-color: #f08080;
+  justify-content: center;
+  align-items: center;
 }
 #field li div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid black;
   height: 50px;
   width: 50px;
+  font-size: 28px;
 }
 #field li div.clicked {
   background-color: #fff;

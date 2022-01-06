@@ -193,6 +193,7 @@ function showAllBombs(){
  * @param {*} event 
  */
 function checkBombsAround(event){
+    const this_square = event.target
     //starting square coordinates
     const startY = event.target.dataset.y;
     const startX = event.target.dataset.x;
@@ -276,6 +277,34 @@ function checkBombsAround(event){
 
     // scrive il numero di bombe trovate
     if(counter > 0){
-        event.target.innerHTML = counter;
+        this_square.innerHTML = counter;
+
+        switch(counter){
+            case 1:
+                this_square.style.backgroundColor = "var(--soft-alert)"
+                    break;
+            case 2:
+                this_square.style.backgroundColor = "var(--alert)"
+                    break;
+            case 3:
+                this_square.style.backgroundColor = "var(--danger)"
+                    break;
+            default: 
+                this_square.style.backgroundColor = "var(--default)"
+                break;
+        }
+
+        if(counter > 3){
+                this_square.style.backgroundColor = "var(--most-danger)"
+        }
     }
+
+    // se (counter = 0) lancio sblocco caselle
+    if (counter = 0){
+        unlockSafeSquare(event);
+    }
+}
+
+function unlockSafeSquare(event){
+    
 }

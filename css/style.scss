@@ -5,9 +5,40 @@
     box-sizing: border-box;
 }
 
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Raleway&family=Secular+One&display=swap');
+body{
+    font-family: 'Secular One', sans-serif;
+}
+
+// bg-colors
+:root{
+    --default: #fff;
+    --soft-alert: #ffdd93;
+    --alert: #ebc109;
+    --danger: #ff8331;
+    --most-danger: #be3636;
+}
+// .soft-alert{
+//     background-color: #ffdd93 !important;
+// }
+// .alert{
+//     background-color: #ebc109 !important;
+// }
+// .danger{
+//     background-color: #ff8331 !important;
+// }
+// .most-danger{
+//     background-color: #be3636 !important;
+// }
+
+// Page
 #scoreboard{
     padding: 15px 30%;
     background-color: lightblue;
+    p{
+        font-family: 'Raleway', sans-serif;
+    }
 }
 
 #field{
@@ -20,11 +51,17 @@
     li{
         display: flex;
         background-color:#f08080;
+        justify-content: center;
+        align-items: center;
         
         div{
+            display: flex;
+            justify-content: center;
+            align-items: center;
             border: 1px solid black;
             height: 50px;
             width: 50px;
+            font-size: 28px;
             
             &.clicked{
                 background-color: #fff;
