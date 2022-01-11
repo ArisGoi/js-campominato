@@ -1,114 +1,301 @@
-/** RICHIESTA
- * all’inizio il software richiede anche una difficoltà all’utente che cambia il range di numeri casuali:
-        con difficoltà 0 => tra 1 e 100
-        con difficoltà 1 => tra 1 e 80
-        con difficoltà 2 => tra 1 e 50
- * Il computer deve generare 16 numeri casuali tra 1 e 100 (bombe).
- * I numeri non possono essere duplicati.
- * In seguito il giocatore clicca sulle celle numerate (non può cliccare più volte sulla stessa cella)
- * La partita termina quando il giocatore clicca su un numero “vietato” o clicca su tutte le celle che non sono delle bombe.
- * Al termine della partita il software deve comunicare il punteggio.
-*/
+/** --------------------------------------------
+## TODO: ##
+-- Rifare lo style
+-- Fare Responsive
+--(al click di button-restart non viene resettato l'event-listener)
+------------------------------------------------ */
+
+// DOM
+const dom_field = document.getElementById("field");
+const points = document.getElementById("points");
+
+document.getElementById('btn-start').addEventListener('click', ()=>{startGame()})
+
+// Param & Settings
+const bombs = 16;
+let bombList = [];
+let clickList = [];
+//----
+let colSize = 10;
+let gridSize = colSize * colSize;
+//----
+let score = 0;
 
 
-var nOfSquare;
+// ##### Basic Functions #####
+/**
+ * StartGame
+ * svuota il campo e genera la griglia
+ */
+function startGame(){
+    // libera il campo e resetta i dati
+    document.getElementById('field').innerHTML = "";
+    bombList = [];
+    clickList = ['undefined-undefined'];
+    score = 0;
+    points.innerHTML = score;
+    dom_field.style.zIndex = "0";
 
-var clickList = [];
-var bombList = [];
+    // legge la difficoltà e definisce il numero di quadrati
+    const getDiff = document.getElementById("diff").value;
+    switch(getDiff){
+        case '0':
+            colSize = 10;
+                break;
+        case '1':
+            colSize = 8;
+                break;
+        case '2':
+            colSize = 6;
+                break;
+    }
 
-var pointCounter = 0;
-
+    //richiama funzioni start
+    makeField();
+    makeBombs();
+    addClickEvent();
+}
 
 /**
- * CHILD GENERATOR
- * Genera un numero definito di figli all'interno di un'elemento
+ * addClickEvent
+ * aggiunge un listener click alla griglia e lancia i controlli su bombe e azioni
  */
-function childGenerator(nameContainElement, typeOfChild, nameChildClass, numberOfChild){
-    for (i = 0; i < numberOfChild; i++) {
-        document.getElementById(nameContainElement).innerHTML += 
-        `<${typeOfChild} id="${i}" class="${nameChildClass}"></${typeOfChild}>`
+function addClickEvent(){
+    document.getElementById('field').addEventListener("click", (event)=>{
+        let eventY = event.target.dataset.y;
+        let eventX = event.target.dataset.x;
+
+        console.log(`hai premuto su: y=${eventY} x=${eventX}`);
+
+        checkSquare(event, eventY, eventX);
+    })
+}
+
+// GAME OVER
+function gameOver(event){
+    //rimuove la possibilità di clickare il campo
+    dom_field.style.position = "relative";
+    dom_field.style.zIndex = "-1";
+
+    alert('HAI PERSO! il dito');
+
+    showAllBombs(); //mostra tutte le bombe
+    event.target.classList.add('this-bomb'); //evidenzia la bomba esplosa
+}
+
+// -_-_--_-_-_-_--_-_-___-__-_-_--_--_-_-_----_-_--_----_-_--_-_-_-__-_-_-_-__--_-_-_--_-_--_-__-_-__-_-__-_
+
+/**
+ * makeField
+ * Genera il campo da gioco:
+ * la tabella con coordinare x e y per ogni quadrato
+ */
+function makeField() {
+    let addTable = document.createElement("ul");
+    let addRow;
+    let addCell;
+
+    dom_field.appendChild(addTable);
+
+    for (let y = 0; y < colSize; y++) {
+        addRow = document.createElement("li");
+        addRow.dataset.row = y;
+
+        for (let x = 0; x < colSize; x++) {
+            addCell = document.createElement("div");
+            addCell.dataset.y = y;
+            addCell.dataset.x = x;
+
+            addRow.appendChild(addCell);
+        }
+
+        addTable.appendChild(addRow);
     }
 }
 
 /**
- * RESTART
- * Pulisce il campo
- * legge difficoltà e richiama childGenerator() inserendo i dati in base alla difficoltà
+ * makeBombs
+ * genera le bombe sul terreno e le inserisce nella bombList
  */
-// leggo difficoltà e richiamo la funzione childGenerator inserendo i dati in base alla difficoltà
-function startGame(){
-    // libera il campo
-    document.getElementById('field').innerHTML = "";
-    clickList = [NaN];
+function makeBombs(){
+    let bomb;
 
-    // legge la difficoltà e definisce il numero di quadrati
-    let difficulty = document.getElementById('diff').value;
-    if (difficulty == 0){ //facile
-        nOfSquare = 100;
-    } else if (difficulty == 1){ //medio
-        nOfSquare = 80;
-    } else if (difficulty == 2){ //difficile
-        nOfSquare = 50;
-    };
-    // genera il campo
-    childGenerator("field", "div", "square", nOfSquare);
+    while (bombs>bombList.length){
+        let bomb;
 
-    // genera 16 numeri diversi (bombe)
-    bombList = [];
-    while (16>bombList.length){
-        let bombPosNumber = parseInt(Math.random() * nOfSquare);
+        do{
+            getY = parseInt(Math.random() * colSize);
+            getX = parseInt(Math.random() * colSize);
 
-        while (bombList.includes(bombPosNumber)){
-            bombPosNumber = parseInt(Math.random() * nOfSquare);
-        };
-        // in bombList inserisce il numero della posizione della bomba
-        bombList.push(bombPosNumber);
-        // posiziona la grafica della bomba nel campo
-        document.getElementById(bombPosNumber).classList.add('bombInside');
+            bomb = {
+                posY: getY,
+                posX: getX,
+                code: `${getY}-${getX}`
+            }
+        } while(bombList.find(obj => { //check se è già contenuto
+            if(obj.code == bomb.code){return true} else{return false}
+        }));
+
+        // in bombList inserisce la bomba
+        bombList.push(bomb);
     };
 }
 
-// Al click di btn-restart richiama startGame()
-document.getElementById('btn-restart').addEventListener('click',
-function(){
-    startGame();
-    pointCounter = 0;
-    document.getElementById('points').innerHTML = "Your Score: " + pointCounter;
+/**
+ * checkSquare
+ * Controlla l'identità del quadrato premuto e lancia le azioni correlate
+ * @param {*} event - event da eventListener
+ * @param {number} eventY - Coordinata_Y
+ * @param {number} eventX - Coordinata_X
+ */
+function checkSquare(event, eventY, eventX){
+    // Controllo click su Bomba
+    if(bombList.find(obj => {
+        if(obj.code == `${eventY}-${eventX}`){return true} else{return false}
+    })){//Azione Boom!
+        gameOver(event);
+        
+    } else{//Azione Save!
+        event.target.classList.add('clicked');
+
+        //Validazione doppio-click
+        if(!clickList.includes(`${eventY}-${eventX}`)){
+            clickList.push(`${eventY}-${eventX}`);
+            score++;
+            points.innerHTML = score;
+        }
+
+        checkBombsAround(event);
+    }
 }
-);
 
+/**
+ * showAllBombs
+ * mostra tutte le bombe presenti nel campo
+ */
+function showAllBombs(){
 
+    let selAll = document.getElementById('field').querySelectorAll('div');
 
-document.getElementById('field').addEventListener('click',
-function clickEvent(event){
-    // identifica la cella clickata
-    let nCella = parseInt(event.target.id);
+    selAll.forEach(elm => {
+        let elmY = elm.dataset.y;
+        let elmX = elm.dataset.x;
 
-    // aggiunge la classe selcted alla cella
-    event.target.classList.add('selected');
+        if(bombList.find(obj => {if(obj.code == `${elmY}-${elmX}`){return true} else{return false}})){
+            elm.classList.add('bombInside');
+        }
+    });
+}
+
+/**
+ * checksBombsAround
+ * controlla quante bombe toccano il quadrato selezionato
+ * @param {*} event 
+ */
+function checkBombsAround(event){
+    const this_square = event.target
+    //starting square coordinates
+    const startY = event.target.dataset.y;
+    const startX = event.target.dataset.x;
+    //min & max of x & y
+    const min = 0;
+    const max = colSize - 1;
+    //counter of around bombs
+    let counter = 0;
+
+    // check[UP]
+    if(startY != min){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) - 1}-${parseInt(startX)}`){
+                counter++;
+            }
+        })
+    }
+
+    // check[UP-RIGHT]
+    if(startY != min && startX != max){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) - 1}-${parseInt(startX) + 1}`){
+                counter++;
+            }
+        })
+    }
+
+    // check[RIGHT]
+    if(startX != max){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY)}-${parseInt(startX) + 1}`){
+                counter++;
+            }
+        })
+    }
     
-
-    // se la cella è valida aumenta il punteggio
-    console.log("click: " + parseInt(event.target.id));
-    if(clickList.includes(nCella) == false){
-
-        pointCounter++;
-        clickList.push(nCella);
-    };
-
-    // se la cella è una bomba "hai perso" e blocca il click su tutto il campo
-    if (bombList.includes(nCella)){
-        alert('hai perso')
-        document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`;
-        pointCounter--;
-    };
-
-    document.getElementById('points').innerHTML = "Your Score: " + pointCounter;
-
-    if(pointCounter == (nOfSquare - 16)){
-        alert('hai vinto');
-        document.getElementById('field').innerHTML += `<div class="bloccoClick"></div>`;
-    };
+    // check[DOWN-RIGHT]
+    if(startY != max && startX != max){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) + 1}-${parseInt(startX) + 1}`){
+                counter++;
+            }
+        })
+    }
     
+    // check[DOWN]
+    if(startY != max){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) + 1}-${parseInt(startX)}`){
+                counter++;
+            }
+        })
+    }
+    
+    // check[DOWN-LEFT]
+    if(startY != max && startX != min){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) + 1}-${parseInt(startX) - 1}`){
+                counter++;
+            }
+        })
+    }
+    
+    // check[LEFT]
+    if(startX != min){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY)}-${parseInt(startX) - 1}`){
+                counter++;
+            }
+        })
+    }
+    
+    // check[UP-LEFT]
+    if(startY != min && startX != min){
+        bombList.find(obj => {
+            if(obj.code == `${parseInt(startY) - 1}-${parseInt(startX) - 1}`){
+                counter++;
+            }
+        })
+    }
+
+    // scrive il numero di bombe trovate
+    if(counter > 0){
+        this_square.innerHTML = counter;
+
+        switch(counter){
+            case 1:
+                this_square.style.backgroundColor = "var(--soft-alert)"
+                    break;
+            case 2:
+                this_square.style.backgroundColor = "var(--alert)"
+                    break;
+            case 3:
+                this_square.style.backgroundColor = "var(--danger)"
+                    break;
+            default: 
+                this_square.style.backgroundColor = "var(--default)"
+                break;
+        }
+
+        if(counter > 3){
+                this_square.style.backgroundColor = "var(--most-danger)"
+        }
+    }
 }
-);

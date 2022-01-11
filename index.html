@@ -4,29 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>js-grafica-cm</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Piranha's Lake</title>
 </head>
 <body>
-    <div id="field">
-    </div>
-
     <div id="scoreboard">
-        <h1>Piranha's Lake</h1>
-        <hr>
-        <p>Are you lucky?</p>
-        <br>
-        <p>Press on a square and hope there's not a Piranha inside</p>
-        <hr>
-        <h3 id="points">Your Score: 0</h3>
-        <select name="diff" id="diff">
-            <option value="0">Easy</option>
-            <option value="1">Hard</option>
-            <option value="2">Insane</option>
-        </select>
-        <button id="btn-restart">Restart</button>
+        <div class="container">
+            <h1>Piranha's Lake</h1>
+            <hr>
+            <p>Are you lucky?</p>
+            <p>Press on a square and hope there's not a Piranha inside</p>
+            <hr>
+            <h3>Your Score: <span id="points">0</span></h3>
+            <select name="diff" id="diff">
+                <option value="0">Easy</option>
+                <option value="1">Hard</option>
+                <option value="2">Insane</option>
+            </select>
+            <button id="btn-start">Restart</button>
+        </div>
     </div>
 
+    <div id="field">
+        <!-- <ul>
+            <li data-row="0">
+                <div data-y="0" data-x="0"></div>
+                <div data-y="0" data-x="1"></div>
+            </li>
+        </ul> -->
+    </div>
 
     <script src="main.js"></script>
 </body>
