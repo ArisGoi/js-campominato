@@ -19,18 +19,6 @@ body{
     --danger: #ff8331;
     --most-danger: #be3636;
 }
-// .soft-alert{
-//     background-color: #ffdd93 !important;
-// }
-// .alert{
-//     background-color: #ebc109 !important;
-// }
-// .danger{
-//     background-color: #ff8331 !important;
-// }
-// .most-danger{
-//     background-color: #be3636 !important;
-// }
 
 // Page
 #scoreboard{
@@ -42,6 +30,9 @@ body{
 }
 
 #field{
+    max-width: fit-content;
+    margin: 40px auto;
+
     ul{
         display: flex;
         flex-direction: column;
@@ -50,7 +41,6 @@ body{
 
     li{
         display: flex;
-        background-color:#f08080;
         justify-content: center;
         align-items: center;
         
@@ -59,6 +49,7 @@ body{
             justify-content: center;
             align-items: center;
             border: 1px solid black;
+            background-color: lightblue;
             height: 50px;
             width: 50px;
             font-size: 28px;
