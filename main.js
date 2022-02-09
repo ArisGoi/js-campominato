@@ -2,7 +2,6 @@
 ## TODO: ##
 -- Rifare lo style
 -- Fare Responsive
---(al click di button-restart non viene resettato l'event-listener)
 ------------------------------------------------ */
 
 // DOM
@@ -57,30 +56,31 @@ function startGame(){
 }
 
 /**
- * addClickEvent
+ * addClickEvent & clickEvent
  * aggiunge un listener click alla griglia e lancia i controlli su bombe e azioni
  */
 function addClickEvent(){
-    document.getElementById('field').addEventListener("click", (event)=>{
-        let eventY = event.target.dataset.y;
-        let eventX = event.target.dataset.x;
+    document.getElementById('field').addEventListener("click", clickEvent);
+}
+function clickEvent(ev){
+    let eventY = ev.target.dataset.y;
+    let eventX = ev.target.dataset.x;
 
-        console.log(`hai premuto su: y=${eventY} x=${eventX}`);
+    console.log(`hai premuto su: y=${eventY} x=${eventX}`);
 
-        checkSquare(event, eventY, eventX);
-    })
+    checkSquare(ev, eventY, eventX);
 }
 
 // GAME OVER
 function gameOver(event){
-    //rimuove la possibilità di clickare il campo
-    dom_field.style.position = "relative";
-    dom_field.style.zIndex = "-1";
-
+    
     alert('HAI PERSO! il dito');
-
+    
     showAllBombs(); //mostra tutte le bombe
     event.target.classList.add('this-bomb'); //evidenzia la bomba esplosa
+
+    //rimuove la possibilità di clickare il campo
+    document.getElementById('field').removeEventListener("click", clickEvent);
 }
 
 // -_-_--_-_-_-_--_-_-___-__-_-_--_--_-_-_----_-_--_----_-_--_-_-_-__-_-_-_-__--_-_-_--_-_--_-__-_-__-_-__-_
