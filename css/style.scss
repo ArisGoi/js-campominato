@@ -21,6 +21,12 @@ body{
 }
 
 // Page
+.container{
+    h1{
+        margin-top: 10px;
+    }
+}
+
 #scoreboard{
     padding: 15px 30%;
     background-color: lightblue;
@@ -31,7 +37,7 @@ body{
 
 #field{
     max-width: fit-content;
-    margin: 40px auto;
+    margin: 20px auto;
 
     ul{
         display: flex;
@@ -65,6 +71,28 @@ body{
             &.bombInside.this-bomb{
                 background-color: red;
             }
+        }
+    }
+}
+
+#toggleRules{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+#rules.hide{
+    display: none;
+}
+
+// MEDIA QUERIES
+@media screen and (max-width: 800px){
+    #scoreboard{
+        padding: 15px 10px;
+    }
+    #field{
+        li div{
+            height: 37px;
+            width: 37px;
         }
     }
 }

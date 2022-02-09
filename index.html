@@ -11,10 +11,15 @@
     <div id="scoreboard">
         <div class="container">
             <h1>Piranha's Lake</h1>
-            <hr>
-            <p>Are you lucky?</p>
-            <p>Press on a square and hope there's not a Piranha inside</p>
-            <hr>
+            <button id="toggleRules">Need rules ?</button>
+            <div id="rules" class="hide">
+                <hr>
+                <p>Are you lucky?</p>
+                <p>Press on a square and hope there's not a Piranha inside</p>
+                <hr>
+                <p>The number in squares indicate the number of Piranha that touch it</p>
+                <hr>
+            </div>
             <h3>Your Score: <span id="points">0</span></h3>
             <select name="diff" id="diff">
                 <option value="0">Easy</option>
@@ -35,5 +40,6 @@
     </div>
 
     <script src="main.js"></script>
+    <script src="style-script.js"></script>
 </body>
 </html>
